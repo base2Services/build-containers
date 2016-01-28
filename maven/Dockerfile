@@ -9,7 +9,7 @@ RUN curl http://apache.uberglobalmirror.com/maven/maven-3/$MAVEN_VERSION/binarie
   && tar xvfz /tmp/maven.tar.gz -C /usr/share/java/ \
   && mv /usr/share/java/apache-maven-$MAVEN_VERSION /usr/share/java/maven \
   && rm -rf /tmp/maven.tar.gz \
-  && apk --update add git && rm -rf /var/cache/apk/*
+  && apk --update add libbz2 git && rm -rf /var/cache/apk/*
 
 ADD maven.sh /etc/profile.d/maven.sh
 
