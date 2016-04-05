@@ -1,0 +1,125 @@
+require 'cfndsl/rake_task'
+require 'rake'
+require 'yaml'
+require "net/http"
+require "net/https"
+require "uri"
+require "aws-sdk"
+
+
+namespace :cfn do
+
+  #load config
+  current_dir = File.dirname(File.expand_path(__FILE__))
+  config = YAML.load(File.read("config/default_params.yml"))
+  templates = Dir["templates/**/*.rb"]
+  files = []
+  templates.each do |template|
+    filename = "#{template}"
+    output = template.sub! 'templates/', ''
+    output = output.sub! '.rb', '.json'
+    files << { filename: filename, output: "output/#{output}" }
+  end
+
+  stack_name = ENV['stack_name'] || 'ci'
+  environment_type = ENV['environment_type'] || 'staging'
+  cf_version = ENV['cf_version'] || 'dev'
+  rds_snapshot = ENV['rds_snapshot'] || ''
+  retry_count = ENV['retry_count'] || '60'
+  aws_profile = ENV['AWS_PROFILE'] || config['aws_profile']
+
+  extra_files = Dir['config/*.yml']
+  extras = []
+  extra_files.each do |extra|
+    extras << [:yaml, extra]
+  end
+  extras << [:raw, "cf_version='#{cf_version}'"]
+
+  CfnDsl::RakeTask.new do |t|
+    t.cfndsl_opts = {
+      verbose: true,
+      files: files,
+      extras: extras
+    }
+  end
+
+  desc('validate cloudformation templates')
+  task :validate do
+    cfn = aws_cf_client(aws_profile, config['source_region'])
+    Dir["output/**/*.json"].each do |t|
+      print("validating template: #{t}" )
+      begin
+        result = cfn.validate_template(template_body: "#{File.read(t)}")
+      rescue Aws::CloudFormation::Errors::ValidationError => e
+        puts("...template #{t} is invalid see error log for details\n\n")
+        puts "#{t} - #{e}\n\n"
+        abort(e)
+      end
+      puts("....is valid")
+    end
+  end
+
+  desc('deploy cloudformation templates to S3')
+  task :deploy do
+    s3 = aws_s3_client(aws_profile, config['source_region'])
+    Dir["output/**/*.json"].each do |t|
+      template_name = File.basename t
+      s3_location = "cloudformation/#{cf_version}/#{template_name}"
+      body = File.read(t)
+      puts("upload: #{t} to s3://#{config['source_bucket']}/#{s3_location}")
+      begin
+        result = s3.put_object(bucket: config['source_bucket'], key: s3_location, body: body)
+      rescue Exception => e
+        puts("#{t} has failed to upload see error log for details\n\n")
+        puts "#{t} - #{e}\n\n"
+        abort(e)
+      end
+    end
+  end
+
+  desc('creates an environment')
+  task :create do
+    puts "TODO"
+  end
+
+  desc('updates an environment')
+  task :update do
+    puts "TODO"
+  end
+
+  desc('deletes an environment')
+  task :delete do
+    puts "TODO"
+  end
+
+  def aws_cf_client(profile_name, region)
+    if use_credentials(profile_name)
+      credentials = Aws::SharedCredentials.new(profile_name: profile_name)
+      cfn = Aws::CloudFormation::Client.new(region: region, credentials: credentials)
+    else
+      cfn = Aws::CloudFormation::Client.new(region: region)
+    end
+    return cfn
+  end
+
+  def aws_s3_client(profile_name, region)
+    if use_credentials(profile_name)
+      credentials = Aws::SharedCredentials.new(profile_name: profile_name)
+      cfn = Aws::S3::Client.new(region: region, credentials: credentials)
+    else
+      cfn = Aws::S3::Client.new(region: region)
+    end
+    return cfn
+  end
+
+  def use_credentials(profile_name)
+    use_creds = File.exists?("#{ENV['HOME']}/.aws/credentials") && !profile_name.nil?
+    if use_creds
+      puts "Using AWS credentials for profile #{profile_name}"
+    else
+      abort("you must specify config aws_profile parameter or the AWS_PROFILE environment variable") if profile_name.nil?
+    end
+    return use_creds
+  end
+
+end
