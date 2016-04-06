@@ -43,6 +43,18 @@ namespace :cfn do
     }
   end
 
+  desc('usage')
+  task :help do
+    puts "Usage:
+    create    # creates an environment
+    delete    # deletes an environment
+    generate  # Generate Cloudformation
+    update    # updates an environment
+    upload    # upload cloudformation templates to S3
+    validate  # validate cloudformation templates
+    "
+  end
+
   desc('validate cloudformation templates')
   task :validate do
     cfn = aws_cf_client(aws_profile, config['source_region'])
@@ -59,8 +71,8 @@ namespace :cfn do
     end
   end
 
-  desc('deploy cloudformation templates to S3')
-  task :deploy do
+  desc('upload cloudformation templates to S3')
+  task :upload do
     s3 = aws_s3_client(aws_profile, config['source_region'])
     Dir["output/**/*.json"].each do |t|
       template_name = File.basename t

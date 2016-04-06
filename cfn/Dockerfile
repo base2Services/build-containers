@@ -15,4 +15,4 @@ ADD run.sh /usr/local/bin/run.sh
 ADD Rakefile /opt/cfndsl/Rakefile
 
 ENTRYPOINT ["/usr/local/bin/run.sh"]
-CMD ["cfndsl", "-v"]
+CMD ["help"]
