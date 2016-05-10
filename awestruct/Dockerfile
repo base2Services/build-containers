@@ -1,86 +1,40 @@
+FROM       fedora:22
 
-FROM debian:jessie
+# install the required dependencies to complile natice extensions
+RUN        dnf -y install gcc-c++ make ruby-devel libxml2-devel libxslt-devel findutils git ruby
 
-RUN apt-get update \
-	&& apt-get install -y --no-install-recommends \
-		bzip2 \
-		ca-certificates \
-		curl \
-		libffi-dev \
-		libgdbm3 \
-		libssl-dev \
-		libyaml-dev \
-		procps \
-		zlib1g-dev \
-	&& rm -rf /var/lib/apt/lists/*
+RUN        groupadd -r dev && useradd  -g dev -u 1000 dev 
+RUN        mkdir -p /home/dev
+RUN        chown dev:dev /home/dev
 
-# skip installing gem documentation
-RUN mkdir -p /usr/local/etc \
-	&& { \
-		echo 'install: --no-document'; \
-		echo 'update: --no-document'; \
-	} >> /usr/local/etc/gemrc
+# From here we run everything as dev user
+USER       dev
 
-ENV RUBY_MAJOR 2.3
-ENV RUBY_VERSION 2.3.1
-ENV RUBY_DOWNLOAD_SHA256 b87c738cb2032bf4920fef8e3864dc5cf8eae9d89d8d523ce0236945c5797dcd
-ENV RUBYGEMS_VERSION 2.6.4
-ENV BUNDLER_VERSION 1.12.3
+# Setup all the env variables needed for ruby
+ENV        HOME /home/dev
+ENV        GEM_HOME $HOME/.gems
+ENV        GEM_PATH $HOME/.gems
+ENV        PATH $PATH:$GEM_HOME/bin
+ENV        LC_ALL en_US.UTF-8
+ENV        LANG en_US.UTF-8
+RUN        mkdir $HOME/.gems
+ADD        Gemfile /tmp/Gemfile
+# Install Rake and Bundler for driving the Awestruct build & site
+RUN        gem install -N rake bundler
 
-ADD Gemfile /tmp/Gemfile
+# Clone hibernate.org in order to run the setup task
+# RUN        git clone https://github.com/hibernate/in.relation.to.git (3)
+# RUN        cd $HOME/hibernate.org && git checkout production && rake setup
 
-# some of ruby's build scripts are written in ruby
-# we purge this later to make sure our final image uses what we just built
-RUN set -ex \
-	&& buildDeps=' \
-		autoconf \
-		bison \
-		gcc \
-		libbz2-dev \
-		libgdbm-dev \
-		libglib2.0-dev \
-		libncurses-dev \
-		libreadline-dev \
-		libxml2-dev \
-		libxslt-dev \
-		make \
-		ruby \
-	' \
-	&& apt-get update \
-	&& apt-get install -y --no-install-recommends $buildDeps \
-	&& rm -rf /var/lib/apt/lists/* \
-	&& curl -fSL -o ruby.tar.gz "http://cache.ruby-lang.org/pub/ruby/$RUBY_MAJOR/ruby-$RUBY_VERSION.tar.gz" \
-	&& echo "$RUBY_DOWNLOAD_SHA256 *ruby.tar.gz" | sha256sum -c - \
-	&& mkdir -p /usr/src/ruby \
-	&& tar -xzf ruby.tar.gz -C /usr/src/ruby --strip-components=1 \
-	&& rm ruby.tar.gz \
-	&& cd /usr/src/ruby \
-	&& { echo '#define ENABLE_PATH_CHECK 0'; echo; cat file.c; } > file.c.new && mv file.c.new file.c \
-	&& autoconf \
-	&& ./configure --disable-install-doc \
-	&& make -j"$(nproc)" \
-	&& make install \
-  && gem install bundler --version "$BUNDLER_VERSION" \
-  && cd /tmp \
-  && bundle install \
-	&& apt-get purge -y --auto-remove $buildDeps \
-	&& gem update --system $RUBYGEMS_VERSION \
-	&& rm -r /usr/src/ruby
+# We need to patch awestruct to make auto generation work. On mounted volumes file
+# change montoring will only work with polling
+RUN        gem install awestruct
+RUN        cd /tmp
+RUN        bundle install
 
-# install things globally, for great justice
-# and don't create ".bundle" in all our apps
-ENV GEM_HOME /usr/local/bundle
-ENV BUNDLE_PATH="$GEM_HOME" \
-	BUNDLE_BIN="$GEM_HOME/bin" \
-	BUNDLE_SILENCE_ROOT_WARNING=1 \
-	BUNDLE_APP_CONFIG="$GEM_HOME"
-ENV PATH $BUNDLE_BIN:$PATH
-RUN mkdir -p "$GEM_HOME" "$BUNDLE_BIN" \
-	&& chmod 777 "$GEM_HOME" "$BUNDLE_BIN"
-
-WORKDIR /app
-
-EXPOSE 4242
+EXPOSE     4242
+VOLUME     $HOME/base2website
+WORKDIR    $HOME/base2website
 
 ENTRYPOINT ["awestruct"]
 
