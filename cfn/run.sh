@@ -7,4 +7,4 @@ if [[ "x" == "${OVERRIDE_BUNDLE}x" ]]; then
   fi
 fi
 
-rake -f /opt/cfndsl/Rakefile "cfn:$1"
+/opt/cfn/bin/cfn "$@"

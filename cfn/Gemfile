@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
 gem 'rake'
-gem 'cfndsl', '0.4.4'
+gem 'thor'
 gem 'aws-sdk', '2.2.31'
+gem 'cfndsl', '0.4.4'
