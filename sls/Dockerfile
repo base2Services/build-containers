@@ -15,4 +15,4 @@ RUN        npm install -g request omit-empty async-foreach isgd string validator
 RUN        npm install -g xml-objtree foreach aws-dynamodb url-parse auth0
 ENTRYPOINT ["sls"]
 
-CMD [list]
+CMD ["npm install", "list"]
