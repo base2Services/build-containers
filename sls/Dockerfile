@@ -5,8 +5,9 @@ FROM       node:4
 
 VOLUME     /usr/src/app
 WORKDIR    /usr/src/app
-ENV        HOME /usr/src/app
-
+# ENV        HOME /usr/src/app
+RUN        mkdir ~/.aws
+RUN        ln -s ~/.aws .aws
 RUN        npm init -y
 RUN        npm install -g serverless@0.5.6
 RUN        npm install -g serverless-optimizer-plugin@2.5.1 serverless-cors-plugin@0.4.1
@@ -18,9 +19,6 @@ RUN        npm install -g xml-objtree foreach aws-dynamodb url-parse auth0
 
 # RUN        groupadd -r ec2-user && useradd  -g ec2-user -u 1000 ec2-user
 
-
-# From here we run everything as dev user
-RUN whoami
 
 ENTRYPOINT ["sls"]
 
