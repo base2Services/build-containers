@@ -12,7 +12,6 @@ WORKDIR /home/$user
 # VOLUME     /usr/src/app
 # WORKDIR    /usr/src/app
 
-#RUN        ln -s ~/.aws .aws
 RUN        npm init -y
 RUN        npm install -g serverless@0.5.6
 RUN        npm install -g serverless-optimizer-plugin@2.5.1 serverless-cors-plugin@0.4.1
@@ -25,7 +24,9 @@ RUN        npm install -g xml-objtree foreach aws-dynamodb url-parse auth0
 RUN chown $user --recursive .
 USER $user
 RUN        mkdir ~/.aws
-
+RUN        mkdir ~/app
+RUN        cd app
+RUN        ls -al
 ENTRYPOINT ["sls"]
 
 CMD [list]
