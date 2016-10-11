@@ -5,7 +5,7 @@ FROM       node:4
 
 VOLUME     /usr/src/app
 WORKDIR    /usr/src/app
-
+ENV        HOME /usr/src/app
 
 RUN        npm init -y
 RUN        npm install -g serverless@0.5.6
@@ -16,15 +16,12 @@ RUN        npm install -g akismet-api async-foreach slack-notify string
 RUN        npm install -g request omit-empty async-foreach isgd string validator async randomstring s3 node-rules slack-notify
 RUN        npm install -g xml-objtree foreach aws-dynamodb url-parse auth0
 
-RUN        groupadd -r ec2-user && useradd  -g ec2-user -u 1000 ec2-user
-RUN        mkdir -p /usr/src
-RUN        mkdir -p /usr/src/app
-RUN        chown ec2-user:ec2-user /usr/src/app
-ENV        HOME /usr/src/app
-# From here we run everything as dev user
-USER       ec2-user
+# RUN        groupadd -r ec2-user && useradd  -g ec2-user -u 1000 ec2-user
 
+
+# From here we run everything as dev user
+RUN whoami
 
 ENTRYPOINT ["sls"]
 
-CMD [list]
+CMD [list,"chmod 777 ."]
