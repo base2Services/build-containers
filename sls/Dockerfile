@@ -3,6 +3,8 @@ FROM       node:4
 # install the required dependencies to complile native extensions
 
 RUN        groupadd -r dev && useradd  -g dev -u 1000 dev
+RUN        mkdir -p /usr/src
+RUN        mkdir -p /usr/src/app
 RUN        chown dev:dev /usr/src/app
 
 # From here we run everything as dev user
