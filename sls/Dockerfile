@@ -2,8 +2,8 @@ FROM       node:4
 
 
 # install the required dependencies to compile native extensions
- ENV USER_ID 1000
- ENV GROUP_ID 1000
+ ENV USER_ID 500
+ ENV GROUP_ID 500
 
  ENV user ec2-user
  RUN groupadd --system $user --gid $GROUP_ID && useradd --system --create-home --gid $user --uid $USER_ID $user
