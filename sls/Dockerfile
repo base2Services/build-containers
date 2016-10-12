@@ -1,9 +1,12 @@
 FROM       node:4
 
-# install the required dependencies to complile native extensions
 
-ENV user ec2-user
-RUN groupadd --system $user && useradd --system --create-home --gid $user $user
+# install the required dependencies to compile native extensions
+ ENV USER_ID 1000
+ ENV GROUP_ID 1000
+
+ ENV user ec2-user
+ RUN groupadd --system $user --gid $GROUP_ID && useradd --system --create-home --gid $user --uid $USER_ID $user
 
 COPY . /home/$user/
 WORKDIR /home/$user
@@ -21,12 +24,11 @@ RUN        npm install -g akismet-api async-foreach slack-notify string
 RUN        npm install -g request omit-empty async-foreach isgd string validator async randomstring s3 node-rules slack-notify
 RUN        npm install -g xml-objtree foreach aws-dynamodb url-parse auth0
 
-RUN chown $user --recursive .
-USER $user
+ RUN chown $user --recursive .
+ USER $user
 RUN        mkdir ~/.aws
 RUN        mkdir ~/app
-RUN        cd app
-RUN        ls -al
+
 ENTRYPOINT ["sls"]
 
 CMD [list]
