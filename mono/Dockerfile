@@ -4,7 +4,7 @@ MAINTAINER "Aaron Walker" <a.walker@base2services.com>
 
 RUN apt-get update && apt-get install -y \
 	  python-pip \
-		--no-install-recommends \
+          --no-install-recommends \
 	&& rm -rf /var/lib/apt/lists/* \
   && pip install awscli \
   && mkdir -p /usr/src/app/source /usr/src/app/build
