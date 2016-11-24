@@ -2,12 +2,12 @@ FROM       ruby:2.3.1
 
 # install the required dependencies to complile natice extensions
 # RUN        dnf -y install gcc-c++ make ruby-devel libxml2-devel libxslt-devel findutils git ruby
-RUN        groupadd -r dev && useradd  -g dev -u 1000 dev
+# RUN        groupadd -r dev && useradd  -g dev -u 1000 dev
 RUN        mkdir -p /home/dev
-RUN        chown dev:dev /home/dev
+# RUN        chown dev:dev /home/dev
 
 # From here we run everything as dev user
-USER       dev
+# USER       dev
 
 # Setup all the env variables needed for ruby
 ENV        HOME /home/dev
