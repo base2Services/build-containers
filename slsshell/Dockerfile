@@ -19,27 +19,6 @@ WORKDIR /home/$user
 # VOLUME     /usr/src/app
 # WORKDIR    /usr/src/app
 
-RUN apt-get update && \
-    apt-get upgrade -y
-
-
-RUN apt-get install -y \
-    less \
-    man \
-    ssh \
-    python \
-    python-pip \
-    python-virtualenv \
-    vim
-
-RUN \
-    virtualenv aws/env && \
-    ./aws/env/bin/pip install awscli && \
-    echo 'source $HOME/aws/env/bin/activate' >> .bashrc && \
-    echo 'complete -C aws_completer aws' >> .bashrc
-
- 
-
 RUN        npm init -y
 RUN        npm install -g serverless@0.5.6
 RUN        npm install -g serverless-optimizer-plugin@2.5.1 serverless-cors-plugin@0.4.1
