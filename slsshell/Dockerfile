@@ -38,7 +38,7 @@ RUN \
     echo 'source $HOME/aws/env/bin/activate' >> .bashrc && \
     echo 'complete -C aws_completer aws' >> .bashrc
 
-
+ 
 
 RUN        npm init -y
 RUN        npm install -g serverless@0.5.6
