@@ -18,5 +18,13 @@ RUN apt-get -qq update \
     && npm install -g grunt-cli \
     && mkdir -p /data/node
 
+# Scan GitHub's key and add to known hosts
+RUN mkdir /root/.ssh/ \
+  && touch /root/.ssh/known_hosts \
+  && ssh-keyscan github.com >> /root/.ssh/known_hosts
+
+# Scan BitBucket's key and add to known hosts
+RUN ssh-keyscan bitbucket.com >> /root/.ssh/known_hosts
+
 # Set workdir
 WORKDIR /data/node
