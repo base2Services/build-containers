@@ -6,7 +6,7 @@ workflow "Build Containers" {
 action "Build Serverless container" {
   uses = "actions/docker/cli@76ff57a"
   secrets = ["GITHUB_TOKEN"]
-  args = "docker build -t base2/serverless serverless/"
+  args = "build -t base2/serverless serverless/"
 }
 
 action "Docker Registry Login" {
@@ -23,6 +23,6 @@ action "Tag" {
 
 action "Push Latest" {
   uses = "actions/docker/cli@76ff57a"
-  args = "docker push base2/serverless"
+  args = "push base2/serverless"
   needs = ["Tag"]
 }
