@@ -1,8 +1,8 @@
 workflow "Build Containers" {
   on = "push"
   resolves = [
-    "Tag",
     "Push Latest",
+    "Filters for GitHub Actions",
   ]
 }
 
@@ -26,9 +26,14 @@ action "Tag" {
   needs = ["Docker Registry Login", "Build Serverless container"]
 }
 
+action "DEBUG" {
+  uuses = "actions/bin/debug"
+  needs = ["Tag"]
+}
+
 action "Master" {
   uses = "actions/bin/filter@e96fd9a"
-  needs = ["Tag"]
+  needs = ["Tag", "DEBUG"]
   args = "branch master"
 }
 
@@ -37,3 +42,4 @@ action "Push Latest" {
   args = "push base2/serverless:latest"
   needs = ["Master"]
 }
+
