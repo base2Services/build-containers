@@ -29,7 +29,8 @@ action "Tag" {
 action "Push Ref" {
   uses = "actions/docker/cli@76ff57a"
   needs = ["Tag"]
-  args = ["push", "base2/serverless:$GITHUB_REF"]
+  args = "printenv"
+  runs = "sh"
 }
 
 action "Master" {
@@ -49,4 +50,3 @@ action "Push Master" {
   needs = ["Tag Latest"]
   args = "push base2/serverless:latest"
 }
-
