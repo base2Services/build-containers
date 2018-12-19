@@ -8,18 +8,22 @@ workflow "Build Containers" {
 
 action "Build Serverless container" {
   uses = "actions/docker/cli@76ff57a"
-  args = "build -t base2/serverless:build serverless/"
+  args = "build -t serverless serverless/"
 }
 
 action "Docker Registry Login" {
   uses = "actions/docker/login@76ff57a"
   secrets = ["DOCKER_USERNAME", "DOCKER_PASSWORD"]
-  needs = ["Build Serverless container"]
 }
 
 action "Tag" {
   uses = "actions/docker/tag@76ff57a"
-  needs = ["Docker Registry Login"]
+  env = {
+    CONTAINER_REGISTRY_PATH = "base2"
+    IMAGE_NAME = "serverless"
+  }
+  args = ["$IMAGE_NAME", "$CONTAINER_REGISTRY_PATH/$IMAGE_NAME"]
+  needs = ["Docker Registry Login", "Build Serverless container"]
 }
 
 action "Master" {
