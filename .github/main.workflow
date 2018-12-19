@@ -47,5 +47,5 @@ action "Push Master" {
 action "Push Ref" {
   uses = "actions/docker/cli@76ff57a"
   needs = ["Tag"]
-  args = "push base2/serverless:${GITHUB_REF}"
+  args = "push base2/serverless:$GITHUB_REF"
 }
