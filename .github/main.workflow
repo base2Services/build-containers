@@ -1,8 +1,7 @@
 workflow "Build Containers" {
   on = "push"
   resolves = [
-    "Push Latest",
-    "Filters for GitHub Actions",
+    "Push Latest"
   ]
 }
 
@@ -27,7 +26,7 @@ action "Tag" {
 }
 
 action "DEBUG" {
-  uuses = "actions/bin/debug"
+  uses = "actions/bin/debug@master"
   needs = ["Tag"]
 }
 
