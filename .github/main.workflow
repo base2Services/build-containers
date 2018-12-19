@@ -1,8 +1,8 @@
 workflow "Build Containers" {
   on = "push"
   resolves = [
-    "Push Master",
-    "Push Ref",
+    "Tag",
+    "Push Latest",
   ]
 }
 
@@ -26,27 +26,14 @@ action "Tag" {
   needs = ["Docker Registry Login", "Build Serverless container"]
 }
 
-action "Push Ref" {
-  uses = "actions/docker/cli@76ff57a"
-  needs = ["Tag"]
-  args = "printenv"
-  runs = "sh"
-}
-
 action "Master" {
   uses = "actions/bin/filter@e96fd9a"
   needs = ["Tag"]
   args = "branch master"
 }
 
-action "Tag Latest" {
-  uses = "actions/docker/tag@76ff57a"
-  needs = ["Master"]
-  args = "build latest"
-}
-
-action "Push Master" {
+action "Push Latest" {
   uses = "actions/docker/cli@76ff57a"
-  needs = ["Tag Latest"]
   args = "push base2/serverless:latest"
+  needs = ["Master"]
 }
