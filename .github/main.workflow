@@ -26,6 +26,12 @@ action "Tag" {
   needs = ["Docker Registry Login", "Build Serverless container"]
 }
 
+action "Push Ref" {
+  uses = "actions/docker/cli@76ff57a"
+  needs = ["Tag"]
+  args = ["push", "base2/serverless:$GITHUB_REF"]
+}
+
 action "Master" {
   uses = "actions/bin/filter@e96fd9a"
   needs = ["Tag"]
@@ -44,8 +50,3 @@ action "Push Master" {
   args = "push base2/serverless:latest"
 }
 
-action "Push Ref" {
-  uses = "actions/docker/cli@76ff57a"
-  needs = ["Tag"]
-  args = "push base2/serverless:$GITHUB_REF"
-}
