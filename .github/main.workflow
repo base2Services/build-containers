@@ -11,7 +11,7 @@ action "Build Serverless container" {
 
 action "Docker Registry Login" {
   uses = "actions/docker/login@76ff57a"
-  secrets = ["DOCKER_LOGIN", "DOCKER_PASSWORD"]
+  secrets = ["DOCKER_USERNAME", "DOCKER_PASSWORD"]
   needs = ["Build Serverless container"]
 }
 
