@@ -17,7 +17,7 @@ action "Docker Registry Login" {
 
 action "Tag" {
   uses = "actions/docker/tag@76ff57a"
-  args = "base2/serverless"
+  args = "base2/serverless base2/serverless:${GITHUB_SHA}"
   needs = ["Docker Registry Login"]
 }
 
