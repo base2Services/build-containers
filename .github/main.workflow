@@ -1,11 +1,13 @@
 workflow "Build Containers" {
   on = "push"
-  resolves = ["Push Latest"]
+  resolves = [
+    "Push Master",
+    "Push Ref",
+  ]
 }
 
 action "Build Serverless container" {
   uses = "actions/docker/cli@76ff57a"
-  secrets = ["GITHUB_TOKEN"]
   args = "build -t base2/serverless:build serverless/"
 }
 
@@ -17,12 +19,29 @@ action "Docker Registry Login" {
 
 action "Tag" {
   uses = "actions/docker/tag@76ff57a"
-  args = "base2/serverless:build base2/serverless:latest"
   needs = ["Docker Registry Login"]
 }
 
-action "Push Latest" {
-  uses = "actions/docker/cli@76ff57a"
-  args = "push base2/serverless"
+action "Master" {
+  uses = "actions/bin/filter@e96fd9a"
   needs = ["Tag"]
+  args = "branch master"
+}
+
+action "Tag Latest" {
+  uses = "actions/docker/tag@76ff57a"
+  needs = ["Master"]
+  args = "build latest"
+}
+
+action "Push Master" {
+  uses = "actions/docker/cli@76ff57a"
+  needs = ["Tag Latest"]
+  args = "push base2/serverless:latest"
+}
+
+action "Push Ref" {
+  uses = "actions/docker/cli@76ff57a"
+  needs = ["Tag"]
+  args = "push base2/serverless:${GITHUB_REF}"
 }
