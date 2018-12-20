@@ -1,8 +1,12 @@
+FROM base2/awsenv:create_ssm_params as awsenv
+
 FROM node:alpine
 LABEL version="1.35.1"
 ARG SLS_VERSION='1.35.1'
 
 WORKDIR /opt/workspace
+
+COPY --from=awsenv /awsenv /bin/awsenv
 
 RUN \ 
   apk add --no-cache --update \
