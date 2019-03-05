@@ -1,8 +1,8 @@
 FROM base2/awsenv:create_ssm_params as awsenv
 
 FROM node:alpine
-LABEL version="1.35.1"
-ARG SLS_VERSION='1.35.1'
+LABEL version="1.38.0"
+ARG SLS_VERSION='1.38.0'
 
 WORKDIR /opt/workspace
 
