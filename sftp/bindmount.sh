@@ -8,8 +8,9 @@ function bindmount() {
     mount --bind $3 "$1" "$2"
 }
 
-for user in /home/*
+for home_dir in /home/*
 do
+  user=`basename ${home_dir}` 
   echo "mounting uploads directory for $user"
   mkdir -p "/data/${user}/uploads"
   mkdir -p "/home/${user}/uploads"
