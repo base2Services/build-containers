@@ -11,8 +11,16 @@ function bindmount() {
 for home_dir in /home/*
 do
   user=`basename ${home_dir}` 
-  echo "mounting uploads directory for $user"
-  mkdir -p "/data/${user}/uploads"
-  mkdir -p "/home/${user}/uploads"
-  bindmount "/data/${user}/uploads" "/home/${user}/uploads"
+  echo "mounting directories for $user"
+  for user_dirs in "/data/${user}/*"
+  do
+    user_dir=`basename ${user_dirs}`
+    mkdir -p "/home/${user}/${user_dir}"
+    echo "mounting directory /data/${user}/${user_dir} to /home/${user}/${user_dir}"
+    bindmount "/data/${user}/${user_dir}" "/home/${user}/${user_dir}"
+  done
+  if [ -d "/data/${user}/.ssh" ]; then
+    echo "mounting /data/${user}/.ssh to /home/${user}/.ssh as read-only"
+    bindmount "/data/${user}/.ssh" "/home/${user}/.ssh" --read-only
+  fi
 done
