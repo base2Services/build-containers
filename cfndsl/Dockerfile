@@ -12,7 +12,8 @@ RUN apk -Uuv add bash groff less python py-pip && \
 
 USER jenkins
 
-RUN gem install cfndsl -v $CFNDSL_VERSION
+RUN gem install cfndsl -v $CFNDSL_VERSION && \
+		gem install aws-sdk
 
 RUN cfndsl -u $AWS_SPEC_VERSION
 
