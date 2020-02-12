@@ -1,6 +1,6 @@
 FROM python:3.7-alpine
 
-ARG SAM_CLI_VERSION='0.39.0'
+ARG SAM_CLI_VERSION='0.41.0'
 
 RUN apk add --no-cache \
       gcc \
@@ -9,6 +9,7 @@ RUN apk add --no-cache \
       libc-dev \
       libffi-dev \
       openssl-dev \
+      make \
     && pip install \
     awscli \
     aws-sam-cli==${SAM_CLI_VERSION}
