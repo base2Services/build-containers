@@ -10,8 +10,12 @@ RUN apk add --no-cache \
       libffi-dev \
       openssl-dev \
       make \
+      docker \
     && pip install \
     awscli \
     aws-sam-cli==${SAM_CLI_VERSION}
+
+RUN addgroup -g 1000 jenkins && \
+    adduser -D -u 1000 -G jenkins jenkins
 
 ENV SAM_CLI_TELEMETRY=0
