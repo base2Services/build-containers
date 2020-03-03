@@ -6,6 +6,7 @@ ARG PACKER_VERSION="1.5.1"
 RUN apt-get update -qq && apt-get install -qqy \
       curl \
       zip \
+      git \
     && pip install awscli \
     && curl -kL "https://packages.chef.io/files/stable/chefdk/${CHEFDK_VERSION}/debian/8/chefdk_${CHEFDK_VERSION}-1_amd64.deb" > /tmp/chefdk.deb \
     && dpkg -i /tmp/chefdk.deb \
