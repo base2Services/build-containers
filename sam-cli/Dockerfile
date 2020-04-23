@@ -1,6 +1,6 @@
 FROM python:3.7-alpine
 
-ARG SAM_CLI_VERSION='0.41.0'
+ARG SAM_CLI_VERSION='0.45.0'
 
 RUN apk add --no-cache \
       gcc \
