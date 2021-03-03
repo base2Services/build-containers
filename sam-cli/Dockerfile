@@ -1,6 +1,6 @@
-FROM python:3.7-alpine
+FROM python:3.8-alpine
 
-ARG SAM_CLI_VERSION='0.45.0'
+ARG SAM_CLI_VERSION='1.19.1'
 
 RUN apk add --no-cache \
       gcc \
@@ -9,6 +9,7 @@ RUN apk add --no-cache \
       libc-dev \
       libffi-dev \
       openssl-dev \
+      cargo \
       make \
       docker \
     && pip install \
