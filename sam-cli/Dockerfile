@@ -12,6 +12,7 @@ RUN apk add --no-cache \
       cargo \
       make \
       docker \
+      zip \
     && pip install \
     awscli \
     aws-sam-cli==${SAM_CLI_VERSION}
