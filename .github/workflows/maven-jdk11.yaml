@@ -17,4 +17,5 @@ jobs:
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }} # Provide GITHUB_TOKEN to login into the GitHub Packages
         image-name: maven-jdk11 # Provide only Docker image name, tag will be automatically set to latest
+        dockerfile: ./maven-jdk11/Dockerfile
         build-context: ./maven-jdk11
