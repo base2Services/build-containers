@@ -1,3 +1,10 @@
+name: maven-jdk11
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
   build-and-publish-latest:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master' # Running this job only for master branch
