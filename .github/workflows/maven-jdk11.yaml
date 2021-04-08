@@ -3,6 +3,11 @@ name: maven-jdk11
 on:
   push:
     branches: [ master ]
+    paths:
+    - 'maven-jdk11/**'
+
+env:
+  IMAGE_NAME: maven-jdk11
 
 jobs:
   build-and-publish-latest:
@@ -10,12 +15,15 @@ jobs:
     if: github.ref == 'refs/heads/master' # Running this job only for master branch
 
     steps:
-    - uses: actions/checkout@v2 # Checking out the repo
+    - uses: actions/checkout@v2
 
-    - name: Build and Publish latest Docker image
-      uses: VaultVulp/gp-docker-action@1.1.7
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }} # Provide GITHUB_TOKEN to login into the GitHub Packages
-        image-name: maven-jdk11 # Provide only Docker image name, tag will be automatically set to latest
-        dockerfile: ./maven-jdk11/Dockerfile
-        build-context: ./maven-jdk11
+    - name: Build image
+      run: docker build --tag $IMAGE_NAME --label "runnumber=${GITHUB_RUN_ID}" maven-jdk11/
+
+    - name: Log into registry
+      run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+    - name: Push image
+      run: |
+        IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME
+        docker push $IMAGE_ID:latest
