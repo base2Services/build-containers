@@ -16,8 +16,8 @@ RUN mkdir /.azure && chmod -R 777 /.azure \
 \
 && bundle config build.nokogiri --use-system-libraries \
 && bundle config git.allow_insecure true \
-&& gem install json --no-rdoc --no-ri \
-&& gem install rake --no-rdoc --no-ri \
+&& gem install json \
+&& gem install rake \
 \
 && gem cleanup \
 && apk del build-dependencies \
