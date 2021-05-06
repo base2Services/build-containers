@@ -5,6 +5,7 @@ on:
     branches: [ master ]
     paths:
     - 'azure-cli/**'
+    - .github/workflows/azure-cli.yaml
 
 env:
   IMAGE_NAME: azure-cli
