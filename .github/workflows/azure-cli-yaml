@@ -1,4 +1,4 @@
-name: maven-jdk11
+name: azure-cli
 
 on:
   push:
