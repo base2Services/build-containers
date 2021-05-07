@@ -33,6 +33,6 @@ jobs:
         BASE_VERSION=$(cat ${IMAGE_NAME}/version)
         echo "pushing ${IMAGE_NAME} version ${BASE_VERSION}"
         docker tag $IMAGE_NAME $IMAGE_ID:latest
-        docker tag $IMAGE_NAME $IMAGE_ID:${VERSION}
+        docker tag $IMAGE_NAME $IMAGE_ID:${BASE_VERSION}
         docker push $IMAGE_ID:latest
         docker push $IMAGE_ID:${VERSION}
