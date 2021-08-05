@@ -1,7 +1,7 @@
 FROM python:3.8-slim-buster
 
-ARG CHEFDK_VERSION="4.7.73"
-ARG PACKER_VERSION="1.5.1"
+ARG CHEFDK_VERSION
+ARG PACKER_VERSION
 
 RUN apt-get update -qq && apt-get install -qqy \
       curl \
