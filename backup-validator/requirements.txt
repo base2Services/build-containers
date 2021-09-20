@@ -1,0 +1,3 @@
+gitdb
+boto3
+gitpython
