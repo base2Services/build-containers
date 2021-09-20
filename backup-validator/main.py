@@ -2,19 +2,18 @@ import os, sys, subprocess, re, boto3, tarfile, logging, datetime, concurrent.fu
 
 
 logging.basicConfig(level=logging.INFO)
-BACKUP_ACCOUNTS = ['theonestack', 'base2Services']
+BACKUP_ACCOUNT = os.environ['ACCOUNT']
 
 
 def download_backup():
-    session = boto3.Session(profile_name='base2-databunker')
-    s3 = session.client('s3')
+    s3 = boto3.client('s3')
 
     get_last_modified = lambda obj: int(obj['LastModified'].strftime('%s'))
 
     backup_times = []
 
     for account in BACKUP_ACCOUNTS:
-        objs = s3.list_objects_v2(Bucket='base2-backups-608551091241-ap-southeast-2', Prefix=f'github/{account}/')['Contents']
+        objs = s3.list_objects_v2(Bucket=os.environ['BUCKET'], Prefix=f'github/{account}/')['Contents']
         last_added = [obj['Key'] for obj in sorted(objs, key=get_last_modified)]
         last_added = last_added[len(last_added)-1]
         logging.info(f'Last added file in {account}: {last_added}')
@@ -105,16 +104,15 @@ def main():
     # Download the archive file from s3
     backup_times = download_backup()
 
-    for account in BACKUP_ACCOUNTS:
-        repo_names = os.listdir(f'{account}/repositories')
-        logging.info(f'repos: {repo_names}')
+    repo_names = os.listdir(f'{account}/repositories')
+    logging.info(f'repos: {repo_names}')
 
-        # Loop though all repo's within the account concurrently
-        with concurrent.futures.ThreadPoolExecutor(max_workers=100) as executor:
-            futures = [executor.submit(check_repo, repo_name, account, backup_times, valid_repos, invalid_repos, could_not_check) for repo_name in repo_names]
+    # Loop though all repo's within the account concurrently
+    with concurrent.futures.ThreadPoolExecutor(max_workers=100) as executor:
+        futures = [executor.submit(check_repo, repo_name, account, backup_times, valid_repos, invalid_repos, could_not_check) for repo_name in repo_names]
 
-            for future in futures:
-                future.result()
+        for future in futures:
+            future.result()
 
     logging.warning('################ Valid Repos #####################')
     logging.warning(valid_repos)
