@@ -122,7 +122,7 @@ def main():
 
     repo_results = {"valid_repos": [len(valid_repos), valid_repos], "invalid_repos": [len(invalid_repos), invalid_repos], "could_not_check": [len(could_not_check), could_not_check]}
 
-    with open('repos.json') as f:
+    with open('repos.json', 'w') as f:
         f.write(json.dumps(repo_results))
 
 
