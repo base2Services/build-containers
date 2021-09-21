@@ -1,7 +1,7 @@
 import os, sys, subprocess, re, boto3, tarfile, logging, datetime, concurrent.futures, git
 
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
 BACKUP_ACCOUNT = os.environ['GITHUB_BACKUP_VALIDATION_ORG']
 
 
