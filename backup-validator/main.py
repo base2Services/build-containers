@@ -1,4 +1,4 @@
-import os, sys, subprocess, re, boto3, tarfile, logging, datetime, concurrent.futures, git
+import os, sys, subprocess, re, boto3, tarfile, logging, datetime, json, concurrent.futures, git
 
 
 logging.basicConfig(level=logging.DEBUG)
