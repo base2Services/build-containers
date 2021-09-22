@@ -1,14 +1,14 @@
-name: backup-validator
+name: github-backup-validator
 
 on:
   push:
     branches: [ master ]
     paths:
-    - 'backup-validator/**'
-    - .github/workflows/backup-validator.yaml
+    - 'github-backup-validator/**'
+    - .github/workflows/github-backup-validator.yaml
 
 env:
-  IMAGE_NAME: backup-validator
+  IMAGE_NAME: github-backup-validator
 
 jobs:
   build-and-publish-latest:
@@ -29,6 +29,9 @@ jobs:
       run: |
         IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME
         IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
-        echo "pushing ${IMAGE_NAME}"
+        GITHUB_BACKUP_VALIDATOR_VERSION=$(cat ${IMAGE_NAME}/version)
+        echo "pushing ${IMAGE_NAME} version ${GITHUB_BACKUP_VALIDATOR_VERSION}"
         docker tag $IMAGE_NAME $IMAGE_ID:latest
+        docker tag $IMAGE_NAME $IMAGE_ID:${GITHUB_BACKUP_VALIDATOR_VERSION}
         docker push $IMAGE_ID:latest
+        docker push $IMAGE_ID:${GITHUB_BACKUP_VALIDATOR_VERSION}
