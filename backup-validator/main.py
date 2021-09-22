@@ -51,20 +51,29 @@ def get_commits(account, repo_name, location, backup_times=None):
     if location == 'remote':
         for remote in repo.remotes:
             remote.fetch()
-    # get a list of all  branches and format names
+    # get a list of all  branches
     branches = [refs.name for refs in repo.remote().refs]
     logging.debug(f'{location} branches (unformated): {branches}')
     logging.debug(f'{location} branches (fromated): {branches}')
 
-    # Create a dictionary of the most recent  commit and branch name
+    # Create a dictionary of the most recent commit and branch name
     commits = {}
     for branch in branches:
         try:
-            # checkout the current branch
-            repo.git.stash('save')
-            repo.git.checkout(branch)
-            commit = repo.head.commit.hexsha
+            valid = False
+            while not valid:
+                # checkout the current branch
+                repo.git.stash('save')
+                repo.git.checkout(branch)
+                commit = repo.head.commit.hexsha
+
+                if backuptime:
+                    logging.informaiton(f'commit time: {commit.committed_date}')
+                    logging.informaiton(f'buckup time: {backup_times}')
+                    valid = True
+
             commits.update({branch: commit})
+
         except:
             commits.update({branch: None})
     return commits
