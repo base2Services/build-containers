@@ -7,32 +7,18 @@ on:
     - 'azure-cli/**'
     - .github/workflows/azure-cli.yaml
 
-env:
-  IMAGE_NAME: azure-cli
-
 jobs:
-  build-and-publish-latest:
+
+  envs:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master' # Running this job only for master branch
-
+    outputs:
+      azure-cli-version: ${{ steps.env.outputs.version }}
     steps:
-    - uses: actions/checkout@v2
+      - id: env
+        run: echo "::set-output name=version::$(cat azure-cli/version)"
 
-    - name: Build image
-      run: |
-        VERSION=$(cat azure-cli/version)
-        docker build --tag $IMAGE_NAME --label "runnumber=${GITHUB_RUN_ID}" --build-arg AZURE_CLI_VERSION=${VERSION} azure-cli/
-
-    - name: Log into registry
-      run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-
-    - name: Push image
-      run: |
-        IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME
-        IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
-        VERSION=$(cat azure-cli/version)
-        echo "pushing azure-cli version ${VERSION}"
-        docker tag $IMAGE_NAME $IMAGE_ID:latest
-        docker tag $IMAGE_NAME $IMAGE_ID:${VERSION}
-        docker push $IMAGE_ID:latest
-        docker push $IMAGE_ID:${VERSION}
+  build-and-publish-container-image:
+    uses: base2Services/github-workflows/.github/workflows/container-build.yaml@main
+    with:
+      image-name: azure-cli
+      build-args: AZURE_CLI_VERSION=${{ needs.envs.outputs.azure-cli-version }}
