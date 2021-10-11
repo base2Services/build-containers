@@ -12,7 +12,7 @@ jobs:
   import-env:
     runs-on: ubuntu-latest
     outputs:
-      output1: ${{ steps.env.outputs.sam-cli-version }}
+      sam-cli-version: ${{ steps.env.outputs.sam-cli-version }}
     steps:
     - id: env
       run: echo "::set-output name=sam-cli-version::$(cat sam-cli/version)"
