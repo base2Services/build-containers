@@ -8,7 +8,17 @@ on:
     - .github/workflows/sam-cli.yaml
 
 jobs:
+
+  import-env-file:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Import environment variables from a file
+      run: cat version >> $GITHUB_ENV
+
   build-and-publish-container-image:
     uses: base2Services/github-workflows/.github/workflows/container-build.yaml@main
     with:
-      image_name: sam-cli
+      image-name: sam-cli
+      image-version: ${{ env.SAM_CLI_VERSION }}
+      build-args: |
+        SAM_CLI_VERSION=${{ env.SAM_CLI_VERSION }}
