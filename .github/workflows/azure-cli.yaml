@@ -11,16 +11,15 @@ jobs:
 
   envs:
     runs-on: ubuntu-latest
-    outputs:
-      azure-cli-version: ${{ steps.env.outputs.version }}
     steps:
       - name: Check out the repo 
         uses: actions/checkout@v2
       - id: env
         run: |
           output=$(cat azure-cli/version)
-          echo $output
           echo "::set-output name=version::$output"
+    outputs:
+      azure-cli-version: ${{ steps.env.outputs.version }}
 
   build-and-publish-container-image:
     uses: base2Services/github-workflows/.github/workflows/container-build.yaml@main
