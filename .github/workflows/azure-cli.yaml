@@ -18,7 +18,7 @@ jobs:
         uses: actions/checkout@v2
       - id: env
         run: |
-          $output=$(cat azure-cli/version)
+          output=$(cat azure-cli/version)
           echo $output
           echo "::set-output name=version::$output"
 
