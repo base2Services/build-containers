@@ -1,2 +1,2 @@
 image_version=1.31.0
-build_args="SAM_CLI_VERSION=${image_version}"
+build_args="SAM_CLI_VERSION=${{ env.image_version }}"
