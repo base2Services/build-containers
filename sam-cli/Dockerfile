@@ -1,7 +1,5 @@
 FROM python:3.8-alpine
 
-COPY requirements.txt .
-
 RUN apk add --no-cache \
       gcc \
       musl-dev \
@@ -12,8 +10,11 @@ RUN apk add --no-cache \
       cargo \
       make \
       docker \
-      zip \
-    && pip install -t requirements.txt
+      zip
+
+COPY requirements.txt .
+
+RUN pip install -r requirements.txt
 
 RUN addgroup -g 1000 jenkins && \
     adduser -D -u 1000 -G jenkins -G docker jenkins
