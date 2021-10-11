@@ -1,6 +1,6 @@
 FROM python:3.8-alpine
 
-ARG SAM_CLI_VERSION
+COPY requirements.txt .
 
 RUN apk add --no-cache \
       gcc \
@@ -13,9 +13,7 @@ RUN apk add --no-cache \
       make \
       docker \
       zip \
-    && pip install \
-    awscli \
-    aws-sam-cli==${SAM_CLI_VERSION}
+    && pip install -t requirements.txt
 
 RUN addgroup -g 1000 jenkins && \
     adduser -D -u 1000 -G jenkins -G docker jenkins

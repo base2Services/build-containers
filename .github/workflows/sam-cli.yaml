@@ -9,18 +9,7 @@ on:
 
 jobs:
 
-  import-env:
-    runs-on: ubuntu-latest
-    outputs:
-      sam-cli-version: ${{ steps.env.outputs.sam-cli-version }}
-    steps:
-    - id: env
-      run: echo "::set-output name=sam-cli-version::$(cat sam-cli/version)"
-
   build-and-publish-container-image:
     uses: base2Services/github-workflows/.github/workflows/container-build.yaml@main
     with:
       image-name: sam-cli
-      image-version: ${{ needs.import-env.outputs.sam-cli-version }}
-      build-args: |
-        SAM_CLI_VERSION=${{ needs.import-env.outputs.sam-cli-version }}
