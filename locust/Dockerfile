@@ -13,5 +13,3 @@ ENTRYPOINT [ "/entrypoint" ]
 CMD [ "locust" ]
 
 COPY docker-entrypoint.sh /entrypoint
-
-USER locust
