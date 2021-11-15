@@ -2,14 +2,14 @@
 
 set -e
 
-if [ "x" != "${S3_BUCKET}x" ] ; then
-    aws s3 cp s3://${S3_BUCKET}/locust/locustfile.py . --region ${AWS_REGION}
-    chmod +x locustfile.py
-fi
-
 LOCUST_MODE=${LOCUST_MODE:-standalone}
 LOCUST_MASTER_BIND_PORT=${LOCUST_MASTER_BIND_PORT:-5557}
 LOCUST_FILE=${LOCUST_FILE:-locustfile.py}
+
+if [ "x" != "${LOCUST_S3_PATH}x" ] ; then
+    aws s3 cp s3://${LOCUST_S3_PATH}/${LOCUST_FILE} . --region ${AWS_REGION}
+    chmod +x ${LOCUST_FILE}
+fi
 
 if [ ${1} = "locust" ] ; then 
     echo "Starting locust......."
