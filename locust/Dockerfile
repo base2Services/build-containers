@@ -4,7 +4,7 @@ LABEL org.opencontainers.image.source=https://github.com/base2Services/build-con
 
 
 USER root
-RUN pip install awscli
+RUN pip install awscli faker
 
 WORKDIR /locust
 
