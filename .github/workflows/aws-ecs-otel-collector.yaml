@@ -8,6 +8,7 @@ on:
 
 env:
   IMAGE_NAME: aws-ecs-otel-collector
+  OTEL_VERSION: v0.15.1
 
 jobs:
   build-and-publish-latest:
@@ -27,5 +28,5 @@ jobs:
       run: |
         IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME
         IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
-        docker tag $IMAGE_NAME $IMAGE_ID:latest
-        docker push $IMAGE_ID:latest
+        docker tag $IMAGE_NAME $IMAGE_ID:${OTEL_VERSION}
+        docker push $IMAGE_ID:${OTEL_VERSION}
