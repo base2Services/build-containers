@@ -6,9 +6,7 @@ USER root
 
 COPY --from=base2/awsenv:0.2.1 /awsenv /bin/awsenv
 COPY entrypoint.sh /entrypoint.sh
-COPY set_password.sh /set_password.sh
 
-RUN apk update && apk add curl
-RUN chmod +x /entrypoint.sh /set_password.sh
+RUN chmod +x /entrypoint.sh
 
 ENTRYPOINT [ "/entrypoint.sh" ]
