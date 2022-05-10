@@ -1,0 +1,28 @@
+name: test-kitchen
+
+on:
+  push:
+    branches: [ master ]
+    paths:
+    - 'test-kitchen/**'
+    - .github/workflows/test-kitchen.yaml
+
+jobs:
+
+  envs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo 
+        uses: actions/checkout@v2
+      - id: env
+        run: |
+          output=$(cat test-kitchen/version)
+          echo "::set-output name=version::$output"
+    outputs:
+      test-kitchen-version: ${{ steps.env.outputs.version }}
+
+  build-and-publish-container-image:
+    uses: base2Services/github-workflows/.github/workflows/container-build.yaml@main
+    with:
+      image-name: test-kitchen
+      build-args: KITCHEN_VERSION=${{ needs.envs.outputs.test-kitchen-version }}
