@@ -1,0 +1,46 @@
+name: cinc-workstation
+
+on:
+  push:
+    branches: [ master ]
+    paths:
+    - 'cinc-workstation/**'
+    - .github/workflows/cinc-workstation.yaml
+
+jobs:
+  build-and-publish-latest:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out the repo 
+      uses: actions/checkout@v2
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Login to GitHub Container Repository
+      uses: docker/login-action@v1
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    
+    - id: vars
+      name: set variables from version file in the directory
+      run: |
+        output=$(cat cinc-workstation/version)
+        echo "::set-output name=version::$output"
+
+    - name: Build and Push Container Image to GitHub Container Repository
+      uses: docker/build-push-action@v2
+      with:
+        context: ./cinc-workstation
+        push: true
+        tags: |
+          ghcr.io/base2services/cinc-workstation:latest
+          ghcr.io/base2services/cinc-workstation:${{ steps.vars.outputs.version }}
+        labels: |
+          runnumber=${GITHUB_RUN_ID}
+          org.opencontainers.image.source=https://github.com/${GITHUB_REPOSITORY}
+        build-args: |
+          VERSION=${{ steps.vars.outputs.version }}
