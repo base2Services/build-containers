@@ -1,4 +1,6 @@
-FROM python:3.8-alpine
+ARG PYTHON_VERSION
+
+FROM python:${PYTHON_VERSION}-alpine
 
 RUN apk add --no-cache \
       gcc \

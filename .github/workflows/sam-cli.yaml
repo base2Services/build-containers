@@ -30,7 +30,8 @@ jobs:
       run: |
         output=$(cat sam-cli/version)
         echo "::set-output name=version::$output"
-    - name: Build and Push Container Image to GitHub Container Repository
+    
+    - name: Build python 3.8 and Push Container Image to GitHub Container Repository
       uses: docker/build-push-action@v2
       with:
         context: ./sam-cli
@@ -38,8 +39,24 @@ jobs:
         tags: |
           ghcr.io/base2services/sam-cli:latest
           ghcr.io/base2services/sam-cli:${{ steps.vars.outputs.version }}
+          ghcr.io/base2services/sam-cli:${{ steps.vars.outputs.version }}-py3.8
         labels: |
           runnumber=${GITHUB_RUN_ID}
           org.opencontainers.image.source=https://github.com/${GITHUB_REPOSITORY}
         build-args: |
-          KITCHEN_VERSION=${{ steps.vars.outputs.version }}
+          PYTHON_VERSION=3.8
+
+
+    - name: Build python 3.9 and Push Container Image to GitHub Container Repository
+      uses: docker/build-push-action@v2
+      with:
+        context: ./sam-cli
+        push: true
+        tags: |
+          ghcr.io/base2services/sam-cli:${{ steps.vars.outputs.version }}-py3.9
+        labels: |
+          runnumber=${GITHUB_RUN_ID}
+          org.opencontainers.image.source=https://github.com/${GITHUB_REPOSITORY}
+        build-args: |
+          PYTHON_VERSION=3.9
+
