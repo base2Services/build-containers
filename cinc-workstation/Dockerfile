@@ -1,6 +1,6 @@
 FROM ubuntu:18.04
 
-ARG VERSION=22.4.861
+ARG VERSION=22.10.1013
 ENV DEBIAN_FRONTEND=noninteractive \
     GEM_HOME=/home/jenkins/.chefdk/gem/ruby/3.0.0 \
     PATH=/opt/cinc-workstation/bin:/opt/cinc-workstation/embedded/bin:/home/jenkins/.chefdk/gem/ruby/3.0.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
