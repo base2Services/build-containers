@@ -16,7 +16,8 @@ RUN apk add --no-cache \
 
 COPY requirements.txt .
 
-RUN pip install -r requirements.txt
+RUN pip install -r requirements.txt && \
+    pip install aws-sam-cli
 
 RUN addgroup -g 1000 jenkins && \
     adduser -D -u 1000 -G jenkins -G docker jenkins
