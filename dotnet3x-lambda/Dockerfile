@@ -1,7 +1,7 @@
 ARG BASE_VERSION
 ARG NODE_VERSION
 FROM ghcr.io/base2services/dotnet3x:${BASE_VERSION}
-
+ARG NODE_VERSION
 RUN apt update && apt install zip -y && rm -rf /var/lib/apt/lists/*
 RUN dotnet tool install -g Amazon.Lambda.Tools
 RUN npm install -g n
