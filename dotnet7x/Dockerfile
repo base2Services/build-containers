@@ -1,5 +1,5 @@
 ARG BASE_VERSION
-FROM mcr.microsoft.com/dotnet/sdk:${BASE_VERSION}
+FROM  mcr.microsoft.com/dotnet/sdk:${BASE_VERSION}
 
 LABEL org.opencontainers.image.source = 'https://github.com/base2Services/build-containers/dotnet7x'
 
