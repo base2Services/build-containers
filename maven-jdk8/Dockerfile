@@ -2,12 +2,12 @@ FROM openjdk:8-jdk
 
 MAINTAINER "Aaron Walker" <a.walker@base2services.com>
 
-ENV MAVEN_VERSION 3.6.0
+ENV MAVEN_VERSION 3.6.3
 
 RUN apt-get update && apt-get install -y curl git \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* \
-  && curl http://mirror.23media.de/apache/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz -o /tmp/maven.tar.gz \
+  && curl https://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz -o /tmp/maven.tar.gz \
   && mkdir -p /usr/share/java \
   && tar xvfz /tmp/maven.tar.gz -C /usr/share/java/ \
   && mv /usr/share/java/apache-maven-$MAVEN_VERSION /usr/share/java/maven \
