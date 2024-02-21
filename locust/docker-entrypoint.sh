@@ -35,7 +35,7 @@ if [ ${1} = "locust" ] ; then
         fi
         ;;
     esac
+    exec "locust ${LOCUST_OPTS}"
+else
+    exec "$@"
 fi
-
-
-exec "$@"
