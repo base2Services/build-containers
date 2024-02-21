@@ -18,15 +18,17 @@ if [ ${1} = "locust" ] ; then
         exit 1
     fi
 
-    LOCUST_OPTS="-f ${LOCUST_FILE} --host=${TEST_HOST_URL} --no-reset-stats $LOCUST_OPTS"
+    LOCUST_OPTS="--host=${TEST_HOST_URL} --no-reset-stats $LOCUST_OPTS"
 
     case `echo ${LOCUST_MODE} | tr 'a-z' 'A-Z'` in
     "MASTER")
-        LOCUST_OPTS="--master --master-bind-port=${LOCUST_MASTER_BIND_PORT} $LOCUST_OPTS"
+        echo "Setting master node config"
+        LOCUST_OPTS="-f ${LOCUST_FILE} --master --master-bind-port=${LOCUST_MASTER_BIND_PORT} $LOCUST_OPTS"
         ;;
 
-    "SLAVE")
-        LOCUST_OPTS="--slave --master-host=${LOCUST_MASTER} --master-port=${LOCUST_MASTER_BIND_PORT} $LOCUST_OPTS"
+    "WORKER")
+        echo "Setting worker node config"
+        LOCUST_OPTS="-f - --worker --master-host=${LOCUST_MASTER} --master-port=${LOCUST_MASTER_BIND_PORT} --processes -1 $LOCUST_OPTS"
         if [ -z ${LOCUST_MASTER+x} ] ; then
             echo "You need to set LOCUST_MASTER."
             exit 1
