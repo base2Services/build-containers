@@ -14,8 +14,6 @@ env:
 jobs:
   build-and-publish-latest:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master' # Running this job only for master branch
-
     # steps:
     # - uses: actions/checkout@v2
 
