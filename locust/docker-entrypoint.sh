@@ -9,7 +9,7 @@ LOCUST_MASTER_BIND_PORT=${LOCUST_MASTER_BIND_PORT:-5557}
 LOCUST_FILE=${LOCUST_FILE:-locustfile.py}
 LOCUST_LOG_LEVEL=${LOCUST_LOG_LEVEL:-INFO}
 
-LOCUST_OPTS="-f ${LOCUST_FILE} --no-reset-stats"
+LOCUST_OPTS="-f ${LOCUST_FILE}"
 
 if [ -z ${HOST_URL+x} ] ; then
     echo "No value set for (HOST_URL), falling back to host value in the locust class"
