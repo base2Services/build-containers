@@ -35,4 +35,4 @@ jobs:
         with:
           context: ./locust-distributed
           push: true
-          tags: ghcr.io/base2services/locust-distributed:snapshot_${{env.GITHUB_SHA_SHORT}}
+          tags: ghcr.io/base2services/locust-distributed:snapshot_${{env.GITHUB_REF_SLUG}}
