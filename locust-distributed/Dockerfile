@@ -1,6 +1,5 @@
 FROM python:3.6-alpine
 
-ARG LOCUST_VERSION="2.23.1"
 ENV LOCUST_VERSION $LOCUST_VERSION
 
 RUN apk --no-cache add \
@@ -12,7 +11,7 @@ RUN apk --no-cache add \
     && apk --no-cache add \
       libzmq \
     && pip install --no-cache-dir \
-      locust==${LOCUST_VERSION} \
+      locust \
       awscli \
       pyzmq \
     && apk del .build-dep \
