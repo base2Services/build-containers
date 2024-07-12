@@ -12,7 +12,7 @@ RUN apk --no-cache add \
     && apk --no-cache add \
       libzmq \
     && pip install --no-cache-dir \
-      locustio==${LOCUST_VERSION} \
+      locust==${LOCUST_VERSION} \
       awscli \
       pyzmq \
     && apk del .build-dep \
