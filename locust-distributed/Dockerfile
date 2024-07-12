@@ -1,28 +1,16 @@
-FROM python:3.6-alpine
+FROM locustio/locust:2.23.1
 
-ENV LOCUST_VERSION $LOCUST_VERSION
+LABEL org.opencontainers.image.source=https://github.com/base2Services/build-containers
 
-RUN apk --no-cache add \
-      --virtual=.build-dep \
-      build-base \
-      linux-headers \
-      zeromq-dev \
-      libffi-dev \
-    && apk --no-cache add \
-      libzmq \
-    && pip install --no-cache-dir \
-      locust \
-      awscli \
-      pyzmq \
-    && apk del .build-dep \
-    && mkdir /locust
-
-COPY docker-entrypoint.sh /
+USER root
+RUN pip install awscli faker
 
 WORKDIR /locust
 
 EXPOSE 8089 5557 5558
 
-ENTRYPOINT ["/docker-entrypoint.sh"]
+ENTRYPOINT [ "/entrypoint" ]
 
-CMD ["locust"]
+CMD [ "locust" ]
+
+COPY docker-entrypoint.sh /entrypoint
