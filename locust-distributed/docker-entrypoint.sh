@@ -11,6 +11,8 @@ LOCUST_LOG_LEVEL=${LOCUST_LOG_LEVEL:-INFO}
 
 LOCUST_OPTS="-f ${LOCUST_FILE}"
 
+echo "Locust Mode: ${LOCUST_MODE}"
+
 if [ -z ${HOST_URL+x} ] ; then
     echo "No value set for (HOST_URL), falling back to host value in the locust class"
 else
