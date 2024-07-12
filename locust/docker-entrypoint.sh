@@ -24,7 +24,7 @@ case `echo ${LOCUST_MODE} | tr 'a-z' 'A-Z'` in
     ;;
 
 "SLAVE")
-    LOCUST_OPTS="--slave --master-host=${LOCUST_MASTER} --master-port=${LOCUST_MASTER_BIND_PORT} $LOCUST_OPTS"
+    LOCUST_OPTS="--worker --master-host=${LOCUST_MASTER} --master-port=${LOCUST_MASTER_BIND_PORT} $LOCUST_OPTS"
     if [ -z ${LOCUST_MASTER+x} ] ; then
         echo "You need to set LOCUST_MASTER."
         exit 1
