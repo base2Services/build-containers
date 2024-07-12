@@ -23,7 +23,7 @@ case `echo ${LOCUST_MODE} | tr 'a-z' 'A-Z'` in
     LOCUST_OPTS="--master --master-bind-port=${LOCUST_MASTER_BIND_PORT} $LOCUST_OPTS"
     ;;
 
-"SLAVE")
+"WORKER")
     LOCUST_OPTS="--worker --master-host=${LOCUST_MASTER} --master-port=${LOCUST_MASTER_BIND_PORT} $LOCUST_OPTS"
     echo "Options: ${LOCUST_OPTS}"
     if [ -z ${LOCUST_MASTER+x} ] ; then
