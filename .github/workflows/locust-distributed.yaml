@@ -33,6 +33,6 @@ jobs:
       - name: Build and push Container Image to GitHub Container Repository
         uses: docker/build-push-action@v6
         with:
-          context: ./locust
+          context: ./locust-distributed
           push: true
           tags: ghcr.io/base2services/locust-distributed:snapshot_${{env.GITHUB_SHA_SHORT}}
