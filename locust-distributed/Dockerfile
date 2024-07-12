@@ -1,6 +1,6 @@
 FROM python:3.6-alpine
 
-ARG LOCUST_VERSION="2.31.1"
+ARG LOCUST_VERSION="2.23.1"
 ENV LOCUST_VERSION $LOCUST_VERSION
 
 RUN apk --no-cache add \
