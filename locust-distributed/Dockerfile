@@ -7,6 +7,8 @@ RUN pip install awscli faker
 
 WORKDIR /locust
 
+EXPOSE 8089 5557 5558
+
 ENTRYPOINT [ "/entrypoint" ]
 
 CMD [ "locust" ]
