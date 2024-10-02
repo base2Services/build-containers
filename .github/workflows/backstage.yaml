@@ -35,4 +35,4 @@ jobs:
         with:
           context: ./backstage
           push: true
-          tags: ghcr.io/base2services/backstage:snapshot_${{env.GITHUB_REF_SLUG}}
+          tags: ghcr.io/base2services/backstage:latest
