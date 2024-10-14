@@ -8,7 +8,7 @@ on:
 
 env:
   IMAGE_NAME: aws-ecs-otel-collector
-  OTEL_VERSION: v0.15.1
+  OTEL_VERSION: v0.41.0
 
 jobs:
   build-and-publish-latest:

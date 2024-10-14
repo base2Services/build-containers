@@ -1,4 +1,4 @@
-FROM public.ecr.aws/aws-observability/aws-otel-collector:v0.15.1
+FROM public.ecr.aws/aws-observability/aws-otel-collector:v0.41.0
 
 LABEL org.opencontainers.image.source = https://github.com/base2Services/build-containers;
 
