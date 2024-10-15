@@ -59,19 +59,6 @@ jobs:
           org.opencontainers.image.source=https://github.com/${GITHUB_REPOSITORY}
         build-args: |
           PYTHON_VERSION=3.9
-
-    - name: Build python 3.7 and Push Container Image to GitHub Container Repository
-      uses: docker/build-push-action@v3
-      with:
-        context: ./sam-cli
-        push: true
-        tags: |
-          ghcr.io/base2services/sam-cli:${{ steps.vars.outputs.version }}-py3.7
-        labels: |
-          runnumber=${GITHUB_RUN_ID}
-          org.opencontainers.image.source=https://github.com/${GITHUB_REPOSITORY}
-        build-args: |
-          PYTHON_VERSION=3.7
   
     - name: Build python 3.11 and Push Container Image to GitHub Container Repository
       uses: docker/build-push-action@v3
