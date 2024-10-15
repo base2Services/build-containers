@@ -37,8 +37,6 @@ jobs:
         context: ./sam-cli
         push: true
         tags: |
-          ghcr.io/base2services/sam-cli:latest
-          ghcr.io/base2services/sam-cli:${{ steps.vars.outputs.version }}
           ghcr.io/base2services/sam-cli:${{ steps.vars.outputs.version }}-py3.8
         labels: |
           runnumber=${GITHUB_RUN_ID}
@@ -79,6 +77,8 @@ jobs:
         context: ./sam-cli
         push: true
         tags: |
+          ghcr.io/base2services/sam-cli:latest
+          ghcr.io/base2services/sam-cli:${{ steps.vars.outputs.version }}
           ghcr.io/base2services/sam-cli:${{ steps.vars.outputs.version }}-py3.12
         labels: |
           runnumber=${GITHUB_RUN_ID}
