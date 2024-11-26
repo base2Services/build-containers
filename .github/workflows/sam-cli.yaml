@@ -77,7 +77,6 @@ jobs:
         context: ./sam-cli
         push: true
         tags: |
-          ghcr.io/base2services/sam-cli:latest
           ghcr.io/base2services/sam-cli:${{ steps.vars.outputs.version }}
           ghcr.io/base2services/sam-cli:${{ steps.vars.outputs.version }}-py3.12
         labels: |
@@ -85,3 +84,18 @@ jobs:
           org.opencontainers.image.source=https://github.com/${GITHUB_REPOSITORY}
         build-args: |
           PYTHON_VERSION=3.12
+    
+    - name: Build python 3.13 and Push Container Image to GitHub Container Repository
+      uses: docker/build-push-action@v3
+      with:
+        context: ./sam-cli
+        push: true
+        tags: |
+          ghcr.io/base2services/sam-cli:latest
+          ghcr.io/base2services/sam-cli:${{ steps.vars.outputs.version }}
+          ghcr.io/base2services/sam-cli:${{ steps.vars.outputs.version }}-py3.13
+        labels: |
+          runnumber=${GITHUB_RUN_ID}
+          org.opencontainers.image.source=https://github.com/${GITHUB_REPOSITORY}
+        build-args: |
+          PYTHON_VERSION=3.13
