@@ -1,4 +1,4 @@
-FROM locustio/locust:2.23.1
+FROM locustio/locust:2.43.4
 
 LABEL org.opencontainers.image.source=https://github.com/base2Services/build-containers
 
