@@ -12,7 +12,8 @@ RUN apt-get update && \
     update-locale LANG=en_US.UTF-8 && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN groupadd -g 1000 jenkins && \
+RUN getent group 1000 || groupadd -g 1000 jenkins && \
+    id -u jenkins >/dev/null 2>&1 || \
     useradd -m -d /home/jenkins -u 1000 -g 1000 -s /bin/bash jenkins
 
 ENV LANG=en_US.UTF-8 \
