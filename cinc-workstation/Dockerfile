@@ -12,8 +12,8 @@ RUN apt-get update && \
     update-locale LANG=en_US.UTF-8 && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN addgroup --gid 1000 jenkins && \
-    adduser --home /home/jenkins --uid 1000 --disabled-password --gecos GECOS --gid 1000 jenkins
+RUN groupadd -g 1000 jenkins && \
+    useradd -m -d /home/jenkins -u 1000 -g 1000 -s /bin/bash jenkins
 
 ENV LANG=en_US.UTF-8 \
     LANGUAGE=en_US:en \
