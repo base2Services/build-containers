@@ -1,6 +1,6 @@
 FROM proxysql/proxysql:2.3.2
 
-COPY --from=base2/awsenv:0.2.1 /awsenv /bin/awsenv
+COPY --from=ghcr.io/base2services/aws-env:0.3.0 /awsenv /bin/awsenv
 
 RUN apt-get update -y \
   && apt-get install -y gettext \

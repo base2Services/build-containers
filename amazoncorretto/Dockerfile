@@ -1,4 +1,4 @@
-FROM base2/awsenv:latest as awsenv 
+FROM ghcr.io/base2services/aws-env:0.3.0 as awsenv
 
 FROM amazoncorretto:8
 

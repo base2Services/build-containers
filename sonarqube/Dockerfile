@@ -4,7 +4,7 @@ FROM sonarqube:${SONARQUBE_TAG}
 
 USER root
 
-COPY --from=base2/awsenv:0.2.1 /awsenv /bin/awsenv
+COPY --from=ghcr.io/base2services/aws-env:0.3.0 /awsenv /bin/awsenv
 COPY entrypoint.sh /entrypoint.sh
 
 RUN chmod +x /entrypoint.sh
